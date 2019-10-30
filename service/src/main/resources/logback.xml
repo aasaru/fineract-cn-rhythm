@@ -22,9 +22,12 @@
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/rhythm.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/archive/rhythm.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>logs/archive/accounting.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>7</maxHistory>
-            <totalSizeCap>2GB</totalSizeCap>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>3MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <totalSizeCap>30MB</totalSizeCap>
         </rollingPolicy>
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
@@ -52,7 +55,13 @@
         <appender-ref ref="STDOUT" />
     </logger>
 
-    <root level="DEBUG">
+    <logger name="org.apache.fineract.cn" additivity="false">
+        <level value="DEBUG" />
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <root level="INFO">
         <appender-ref ref="FILE"/>
     </root>
 </configuration>
